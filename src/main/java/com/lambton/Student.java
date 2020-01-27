@@ -15,6 +15,16 @@ public class Student
     Date birthDate;
     Gender gender;
     float totalMarks;
+
+    public Student(int studentId, String firstName, String lastName, Date birthDate, Gender gender) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+
+    }
+
     public void setData(int studentId, String firstName, String lastName, Date birthDate, Gender gender, float totalMarks)
     {
         this.studentId=studentId;
