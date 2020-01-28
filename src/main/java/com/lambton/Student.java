@@ -1,46 +1,44 @@
 package com.lambton;
 
 import java.time.LocalDate;
-import java.util.Date;
-enum Gender
-{
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
+enum Gender {
     MALE,
     FEMALE,
-    OTHER,
+    OTHERS
 }
-public class Student
-{
+
+public class Student {
     private int studentId;
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private LocalDate birthDate;
+    private int ageInYear;
     private Gender gender;
-    private float totalMarks;
-    private int marks[];
+    private float[] marks;
     private float totalMarks;
     private float percentage;
     private String result;
 
-
-    public Student(int studentId, String firstName, String lastName, Date birthDate, Gender gender) {
+    public Student(int studentId, String firstName, String lastName, LocalDate birthDate, Gender gender, float []marks) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.marks = marks;
+        this.ageInYear = calculateStudentAge();
         this.gender = gender;
-
     }
 
     public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-
     public String getFirstName() {
         return firstName;
+
     }
 
     public void setFirstName(String firstName) {
@@ -55,12 +53,13 @@ public class Student
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+        this.ageInYear = this.calculateStudentAge();
     }
 
     public Gender getGender() {
@@ -75,32 +74,81 @@ public class Student
         return totalMarks;
     }
 
-    private int calculateStudentAge(){
-        int age;
+    public int getAgeInYear() {
+        return ageInYear;
+    }
+
+    public float getPercentage() {
+        return percentage;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void printData() {
+        System.out.println("Student id          : " + studentId);
+        System.out.println("Student FirstName   : " + firstName);
+        System.out.println("Student LastName    : " + lastName);
+        System.out.println("Student Birth Date  : " + getFormattedBirthDate());
+        System.out.println("Student Age (Years) : " + ageInYear);
+        System.out.println("Student Gender      : " + gender);
+        for (int i = 0; i < marks.length; i++)
+        {
+            System.out.println("\tSubject " + (i + 1) + " : " + marks[i]);
+        }
+        System.out.println("Student Total Marks : " + totalMarks);
+        System.out.println("Student Percentage  : " + percentage);
+        System.out.println("Student Result      : " + result);
+
+        //getAge();
+
+    }
+
+    private int calculateStudentAge() {
+        int age = 0;
 
         LocalDate today = LocalDate.now();
-        age= today.getYear()- birthDate.getYear();
+        if(birthDate != null) {
+            age = today.getYear() - birthDate.getYear();
+        }
 
         return age;
     }
 
-    public void setData(int studentId, String firstName, String lastName, Date birthDate, Gender gender, float totalMarks)
+    public void calculateTotalMarks()
     {
-        this.studentId=studentId;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.birthDate=birthDate;
-        this.gender=gender;
-        this.totalMarks=totalMarks;
+        float total = 0.0f;
+        for(int m=0;m<marks.length;m++)        {
+            total = total + marks[m];
+        }
+        this.totalMarks = total;
     }
-    public void printData()
+
+    public void calculatePercentage()
     {
-        System.out.println("studentId" + studentId);
-        System.out.println("firstName" + firstName);
-        System.out.println("lastName" + lastName);
-        System.out.println("birthDate" + birthDate);
-        System.out.println("gender" + gender);
-        System.out.println("totalMarks" + totalMarks);
+        this.percentage = this.totalMarks / 5.0f;
     }
+
+    public void calculateResult()
+    {
+        this.result = this.percentage >= 50.0 ? "PASS" : "FAIL";
+    }
+
+    private String getFormattedBirthDate()
+    {
+        if(birthDate != null) {
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("E, dd MMM, yyyy");
+
+            return this.birthDate.format(myFormatObj);
+        }
+        return new String();
+    }
+
+  /*  private void getAge() {
+        LocalDate now = LocalDate.now();
+        Period diff = Period.between(birthDate, now);
+        System.out.println(diff.getYears() + " years, " + diff.getMonths() + " months, " + diff.getDays() + " days");
+    }*/
 
 }

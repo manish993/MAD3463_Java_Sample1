@@ -1,14 +1,40 @@
 package com.lambton;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Arrays;
 
 public class StudentMainClass
 {
-public static void main(String[] args)
-{
-    Student s1 = new Student();
-    s1.setData(1,"Shree","Marella",new Date(2020,0,24),Gender.MALE,60 );
-    s1.printData();
-}
+    public static void main(String[] args) {
 
+        Student[] listOfStudents = new Student[2];
+
+        //First Student Object
+        LocalDate s1BirthDate =  LocalDate.of(1981, 5, 20);
+        Student s1 = new Student(1,"Charmi","Patel", s1BirthDate ,Gender.FEMALE,
+                new float[]{50.0f, 20.0f, 40, 70, 60});
+
+        listOfStudents[0] = s1;
+
+        //NullPointerException
+        // listOfStudents[0].printData();
+
+        //Second Student Object
+        LocalDate s2BirthDate =  LocalDate.of(1992, 4, 25);
+        Student s2 = new Student(2,"Pritesh","Patel", s2BirthDate ,Gender.MALE,
+                new float[]{50.0f, 80.0f, 50, 70, 60});
+
+        listOfStudents[1] = s2;
+
+        for(Student s: listOfStudents)
+        {
+            s.calculateTotalMarks();
+            s.calculatePercentage();
+            s.calculateResult();
+            s.printData();
+        }
+
+
+    }
 }
